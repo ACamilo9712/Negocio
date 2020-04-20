@@ -40,5 +40,10 @@ public class ProductsService {
         return  request;
     }
 
+    public boolean deleteOne(Long id){
+        Boolean request = sqlProductsRepository.deleteOne(id);
+        return request;
+    }
+
 
 }

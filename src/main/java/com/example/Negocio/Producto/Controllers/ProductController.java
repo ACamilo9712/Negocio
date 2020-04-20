@@ -42,4 +42,8 @@ public class ProductController {
         return service.updateOne(id, operationRequest.getName(), operationRequest.getDescription(), operationRequest.getBasePrice(), operationRequest.getTaxRate(),
                 operationRequest.getProductStatus(), operationRequest.getInventoryQuantity());
     }
+    @DeleteMapping("/{id}")
+    public boolean deleteOne(@PathVariable Long id){
+        return service.deleteOne(id);
+    }
 }

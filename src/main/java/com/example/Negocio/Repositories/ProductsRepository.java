@@ -18,6 +18,6 @@ public interface ProductsRepository {
 
     ProductOperationRequest updateOne(Long id, ProductOperationRequest operationRequest);
 
-    boolean deleteOne(ProductId id);
+    boolean deleteOne(Long id);
 
 }

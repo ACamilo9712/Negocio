@@ -108,12 +108,24 @@ public class SqlProductsRepository implements ProductsRepository{
                 keyHolder // --> {}, {1}
         );
         long key = keyHolder.getKey().longValue();
-        System.out.println(operationRequest);
         return operationRequest;
     }
 
     @Override
-    public boolean deleteOne(ProductId id) {
-        return false;
+    public boolean deleteOne(Long id) {
+        String SQL ="DELETE FROM PRODUCTOS WHERE IDEN = ?";
+        KeyHolder keyHolder = new GeneratedKeyHolder(); // inicializada {}
+        PreparedStatementCreator psc = connection -> {
+            PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, id);
+            return ps;
+        };
+        jdbcTemplate.update(
+                psc,
+                keyHolder // --> {}, {1}
+        );
+
+         return keyHolder.getKey() == null;
+
     }
 }
