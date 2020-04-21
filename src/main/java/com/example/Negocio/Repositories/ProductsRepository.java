@@ -2,22 +2,24 @@ package com.example.Negocio.Repositories;
 
 import com.example.Negocio.Producto.Domain.Product;
 import com.example.Negocio.Producto.Domain.ProductId;
+import com.example.Negocio.Producto.Domain.ProductOperation;
 import com.example.Negocio.Producto.Domain.ProductOperationRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductsRepository {
 
-    ProductOperationRequest insertOne(ProductOperationRequest operationRequest);
+    ProductOperation insertOne(ProductOperationRequest operationRequest);
 
-   ProductOperationRequest findById(Long id);
+    ProductOperation findById(Long id);
 
     List<Product> findAll();
 
-    ProductOperationRequest updateOne(Long id, ProductOperationRequest operationRequest);
+    ProductOperation updateOne(Long id, ProductOperationRequest operationRequest);
 
-    boolean deleteOne(Long id);
+    ProductOperation deleteOne(Long id);
 
 }
