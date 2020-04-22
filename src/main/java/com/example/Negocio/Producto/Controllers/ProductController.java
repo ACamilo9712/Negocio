@@ -37,10 +37,11 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ProductOperationRequest updateOne(@PathVariable Long id, @RequestBody ProductOperationRequest operationRequest) {
+    public ProductOperation updateOne(@PathVariable Long id, @RequestBody ProductOperationRequest operationRequest) {
          service.updateOne(id, operationRequest.getName(), operationRequest.getDescription(), operationRequest.getBasePrice(), operationRequest.getTaxRate(),
                 operationRequest.getProductStatus(), operationRequest.getInventoryQuantity());
-        return operationRequest;
+        return service.updateOne(id, operationRequest.getName(), operationRequest.getDescription(), operationRequest.getBasePrice(), operationRequest.getTaxRate(),
+                operationRequest.getProductStatus(), operationRequest.getInventoryQuantity());
     }
 
     @DeleteMapping("/{id}")

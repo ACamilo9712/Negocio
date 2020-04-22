@@ -75,7 +75,7 @@ public class SqlProductsRepository implements ProductsRepository {
             ProductOperationRequest request = jdbcTemplate.queryForObject(SQL, objects, rowMapper);
             return ProductOperationSuccess.of(request);
         } catch (EmptyResultDataAccessException e) {
-            return ProductOperationFailture.of(productDoesNotExist);
+            return ProductOperationFailture.of(ProductDoesNotExist.of(id));
         }
 
 
@@ -114,8 +114,13 @@ public class SqlProductsRepository implements ProductsRepository {
             ps.setLong(7, id);
             return ps;
         };
-        jdbcTemplate.update(psc, keyHolder);
-        return ProductOperationSuccess.of(operationRequest);
+       int resp = jdbcTemplate.update(psc, keyHolder);
+        System.out.println(resp);
+        if (resp == 1) {
+            return ProductOperationSuccess.of(operationRequest);
+        } else {
+            return ProductOperationFailture.of(ProductDoesNotExist.of(id));
+        }
     }
 
     @Override
