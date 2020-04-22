@@ -11,7 +11,6 @@ public class NegocioApplication {
 
 		SpringApplication.run(NegocioApplication.class, args);
 
-		System.out.print("Vamos A ejecutar el proyecto");
 	}
 
 }

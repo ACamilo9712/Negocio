@@ -1,4 +1,4 @@
-package com.example.Negocio.Producto.Domain;
+package com.example.Negocio.Domain.Producto;
 
 import com.example.Negocio.Serialization.IntegerSerializable;
 import com.example.Negocio.common.Preconditions;

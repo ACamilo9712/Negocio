@@ -1,4 +1,4 @@
-package com.example.Negocio.Producto.Domain;
+package com.example.Negocio.Domain.Producto;
 
 import com.example.Negocio.Serialization.LongSerializable;
 import com.example.Negocio.common.Preconditions;

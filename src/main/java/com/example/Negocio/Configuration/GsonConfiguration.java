@@ -1,6 +1,6 @@
 package com.example.Negocio.Configuration;
 
-import com.example.Negocio.Producto.Domain.*;
+import com.example.Negocio.Domain.Producto.*;
 import com.example.Negocio.Serialization.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

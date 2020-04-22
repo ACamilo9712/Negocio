@@ -1,14 +1,15 @@
-package com.example.Negocio.Producto.Controllers;
+package com.example.Negocio.Controllers;
 
 
-import com.example.Negocio.Producto.Domain.*;
+import com.example.Negocio.Domain.Producto.Product;
+import com.example.Negocio.Domain.Producto.ProductOperation;
+import com.example.Negocio.Domain.Producto.ProductOperationRequest;
+
 import com.example.Negocio.Services.ProductsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/times")

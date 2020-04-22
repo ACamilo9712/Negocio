@@ -1,7 +1,6 @@
-package com.example.Negocio.Producto.Domain;
+package com.example.Negocio.Domain.Producto;
 
 import com.example.Negocio.exceptions.ProductException;
-import lombok.Data;
 import lombok.Value;
 
 @Value(staticConstructor = "of")

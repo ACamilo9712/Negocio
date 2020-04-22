@@ -1,15 +1,15 @@
-package com.example.Negocio.Producto.Domain;
+package com.example.Negocio.Domain.Producto;
 
 import lombok.Value;
 
 @Value(staticConstructor = "of")
+public class Product {
 
-public class ProductOperationRequest {
+    ProductId id;
     Name name;
     Description description;
     BasePrice basePrice;
     TaxRate taxRate;
     ProductStatus productStatus;
     InventoryQuantity inventoryQuantity;
-
 }

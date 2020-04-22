@@ -18,13 +18,13 @@ public class Preconditions {
 
     public static void checkNotEmpty(Object reference){
         if(reference.toString().isEmpty()){
-            throw  new EmptyStackException();
+            throw  new IllegalArgumentException();
         }
     }
 
     public  static void checkMaxCharacters(Object reference, int quantity) {
         if(reference.toString().length() >quantity){
-            throw new NumberFormatException();
+            throw  new IllegalArgumentException();
         }
     }
 
@@ -41,7 +41,7 @@ public class Preconditions {
     }
     public static void highestTypeBigDecimal(BigDecimal reference){
 
-        if(reference.doubleValue() < 1.0){
+        if(reference.doubleValue() > 1.0){
             throw  new NumberFormatException();
         }
     }

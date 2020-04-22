@@ -1,10 +1,9 @@
 package com.example.Negocio.Services;
 
-import com.example.Negocio.Producto.Domain.*;
+import com.example.Negocio.Domain.Producto.*;
+import com.example.Negocio.Domain.*;
 import com.example.Negocio.Repositories.SqlProductsRepository;
-import com.example.Negocio.exceptions.ProductDoesNotExist;
 import com.google.gson.Gson;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,4 @@
-package com.example.Negocio.Producto.Domain;
-
-import lombok.Value;
+package com.example.Negocio.Domain.Producto;
 
 public enum ProductStatus {
     BORRADOR,

@@ -1,10 +1,8 @@
-package com.example.Negocio.Producto.Domain;
+package com.example.Negocio.Domain.Producto;
 
 import com.example.Negocio.Serialization.StringSerializable;
 import com.example.Negocio.common.Preconditions;
 import lombok.Value;
-
-import javax.naming.LimitExceededException;
 
 @Value(staticConstructor = "of")
 public class Name implements StringSerializable {

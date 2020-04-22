@@ -1,6 +1,7 @@
 package com.example.Negocio.Repositories;
 
-import com.example.Negocio.Producto.Domain.*;
+import com.example.Negocio.Domain.Producto.*;
+import com.example.Negocio.Domain.*;
 import com.example.Negocio.exceptions.ProductDoesNotExist;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class SqlProductsRepository implements ProductsRepository {
