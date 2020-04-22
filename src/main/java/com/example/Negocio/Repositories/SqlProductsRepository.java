@@ -53,8 +53,8 @@ public class SqlProductsRepository implements ProductsRepository {
             return ps;
         };
 
-            jdbcTemplate.update(psc, keyHolder);
-            return ProductOperationSuccess.of(operationRequest);
+        jdbcTemplate.update(psc, keyHolder);
+        return ProductOperationSuccess.of(operationRequest);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class SqlProductsRepository implements ProductsRepository {
             return ProductOperationRequest.of(name, descripcion, precioBase, tasaImpuesto, estado, cantidadInventario);
         };
 
-       try {
+        try {
             ProductOperationRequest request = jdbcTemplate.queryForObject(SQL, objects, rowMapper);
             return ProductOperationSuccess.of(request);
         } catch (EmptyResultDataAccessException e) {
@@ -121,21 +121,20 @@ public class SqlProductsRepository implements ProductsRepository {
     @Override
     public ProductOperation deleteOne(Long id) {
         ProductOperationRequest valor = findById(id).value();
-        String SQL ="DELETE FROM PRODUCTOS WHERE IDEN = ?";
+        String SQL = "DELETE FROM PRODUCTOS WHERE IDEN = ?";
         KeyHolder keyHolder = new GeneratedKeyHolder(); // inicializada {}
         PreparedStatementCreator psc = connection -> {
             PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             ps.setLong(1, id);
             return ps;
         };
-       int resp=  jdbcTemplate.update(
+        int resp = jdbcTemplate.update(
                 psc,
                 keyHolder // --> {}, {1}
         );
 
-        System.out.println(resp);
-        if(resp ==1){
-           return ProductOperationSuccess.of(valor);
+        if (resp == 1) {
+            return ProductOperationSuccess.of(valor);
         } else {
             return ProductOperationFailture.of(ProductDoesNotExist.of(id));
 
@@ -156,5 +155,5 @@ public class SqlProductsRepository implements ProductsRepository {
         }
         * */
 
-    }
+}
 
