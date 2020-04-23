@@ -12,7 +12,7 @@ public class BasePrice implements BigDecimalSerializable {
 
     public BasePrice(BigDecimal value) {
         Preconditions.checkNotNull(value);
-        Preconditions.highestTypeBigDecimal(value);
+        Preconditions.smallestTypeBigDecimal(value);
         this.value = value;
     }
 
