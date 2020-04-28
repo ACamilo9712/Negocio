@@ -2,67 +2,119 @@ package com.example.Negocio.Controllers;
 
 import com.example.Negocio.Domain.Producto.*;
 import com.example.Negocio.Services.ProductsService;
+import com.example.Negocio.exceptions.ProductDoesNotExist;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.lang.reflect.Array;
+import static org.mockito.ArgumentMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
+
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ProductController.class)
+
+@SpringBootTest
+@AutoConfigureMockMvc
 class ProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private Gson gson;
+
     @MockBean
     ProductsService service;
+
     private ProductOperation productOperation;
+
     private List<Product> array;
 
     @Test
     void insertOne() throws Exception {
-        BigDecimal bigDecimalPrice = new BigDecimal("11.2659");
-        BigDecimal bigDecimalTax = new BigDecimal("0.25");
-        Name name = Name.of("Andres");
-        Description description = Description.of("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed...");
-        BasePrice price = BasePrice.of( bigDecimalPrice);
-        TaxRate taxRate = TaxRate.of(bigDecimalTax);
-        ProductStatus status = ProductStatus.valueOf("PUBLICADO");
-        InventoryQuantity quantity = InventoryQuantity.of(88);
 
-        when(service.insertOne(name,description,price,taxRate, status,quantity ))
-                .thenReturn(productOperation);
+        ProductOperationRequest product = ProductOperationRequest.of(
+                Name.of("Andres"),
+                Description.of("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed..."),
+                BasePrice.of(new BigDecimal("553.26")),
+                TaxRate.of(new BigDecimal("0.25")),
+                ProductStatus.valueOf("PUBLICADO"),
+                InventoryQuantity.of(88)
+        );
+
+        String productJson = this.gson.toJson(product);
+
+        when(service.insertOne(any(), any(), any(), any(), any(), any()))
+                .thenReturn(ProductOperationSuccess.of(product));
 
         //act
-        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times");
-        this.mockMvc.perform(servletRequestBuilder)
+        this.mockMvc.perform(post("/api/v1/times")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(productJson));
+
+    }
+
+    @Test
+    void insertOneEmpty() throws Exception {
+        when(service.insertOne(any(), any(), any(), any(), any(), any()))
+                .thenReturn(null);
+
+        //act
+        this.mockMvc.perform(post("/api/v1/times"))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
 
+
     @Test
     void findById() throws Exception {
+
+        ProductOperationRequest product = ProductOperationRequest.of(
+                Name.of("Andres"),
+                Description.of("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed..."),
+                BasePrice.of(new BigDecimal("553.26")),
+                TaxRate.of(new BigDecimal("0.25")),
+                ProductStatus.valueOf("PUBLICADO"),
+                InventoryQuantity.of(88)
+        );
+
         when(service.findById(anyLong()))
-                .thenReturn(productOperation);
+                .thenReturn(ProductOperationSuccess.of(product));
         //act
-        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times");
+        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times/1");
         this.mockMvc.perform(servletRequestBuilder)
                 .andDo(print())
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findByIdEmpty() throws Exception {
+        when(service.findById(anyLong()))
+                .thenReturn(ProductOperationFailture.of(ProductDoesNotExist.of(anyLong())));
+        //        //act
+        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times/1");
+        this.mockMvc.perform(servletRequestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -70,18 +122,87 @@ class ProductControllerTest {
         when(service.findAll())
                 .thenReturn(array);
         //act
-        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times");
+        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times/list");
         this.mockMvc.perform(servletRequestBuilder)
                 .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findAllEmpty() throws Exception {
+        when(service.findAll())
+                .thenReturn(array);
+        //act
+        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times/list");
+        this.mockMvc.perform(servletRequestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    void updateOne() throws Exception {
+        ProductOperationRequest product = ProductOperationRequest.of(
+                Name.of("Andres"),
+                Description.of("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed..."),
+                BasePrice.of(new BigDecimal("553.26")),
+                TaxRate.of(new BigDecimal("0.25")),
+                ProductStatus.valueOf("PUBLICADO"),
+                InventoryQuantity.of(88)
+        );
+
+        String productJson = this.gson.toJson(product);
+
+        when(service.updateOne(any(),any(), any(), any(), any(), any(), any()))
+                .thenReturn(ProductOperationSuccess.of(product));
+
+        //act
+        this.mockMvc.perform(put("/api/v1/times/1")
+                .param("id","1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productJson))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+    }
+    @Test
+    void updateOneEmpty() throws Exception {
+        when(service.insertOne(any(), any(), any(), any(), any(), any()))
+                .thenReturn(null);
+
+        //act
+        this.mockMvc.perform(put("/api/v1/times/1"))
+                .andDo(print())
                 .andExpect(status().is4xxClientError());
+
+    }
+    @Test
+    void deleteOne() throws Exception {
+        ProductOperationRequest product = ProductOperationRequest.of(
+                Name.of("Andres"),
+                Description.of("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed..."),
+                BasePrice.of(new BigDecimal("553.26")),
+                TaxRate.of(new BigDecimal("0.25")),
+                ProductStatus.valueOf("PUBLICADO"),
+                InventoryQuantity.of(88)
+        );
+        when(service.deleteOne(anyLong()))
+                .thenReturn(ProductOperationSuccess.of(product));
+        //act
+        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times/1");
+        this.mockMvc.perform(servletRequestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void updateOne() {
-
-    }
-
-    @Test
-    void deleteOne() {
+    void deleteOneEmpty() throws Exception {
+        when(service.deleteOne(anyLong()))
+                .thenReturn(ProductOperationFailture.of(ProductDoesNotExist.of(anyLong())));
+        //act
+        MockHttpServletRequestBuilder servletRequestBuilder = MockMvcRequestBuilders.get("/api/v1/times/1");
+        this.mockMvc.perform(servletRequestBuilder)
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
