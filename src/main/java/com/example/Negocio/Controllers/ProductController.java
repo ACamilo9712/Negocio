@@ -4,7 +4,6 @@ package com.example.Negocio.Controllers;
 import com.example.Negocio.Domain.Producto.Product;
 import com.example.Negocio.Domain.Producto.ProductOperation;
 import com.example.Negocio.Domain.Producto.ProductOperationRequest;
-
 import com.example.Negocio.Services.ProductsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ProductOperation findById(@PathVariable Long id) {
-         ProductOperation optionalUser = service.findById(id);
+        ProductOperation optionalUser = service.findById(id);
         return optionalUser;
     }
 
@@ -39,7 +38,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ProductOperation updateOne(@PathVariable Long id, @RequestBody ProductOperationRequest operationRequest) {
-         service.updateOne(id, operationRequest.getName(), operationRequest.getDescription(), operationRequest.getBasePrice(), operationRequest.getTaxRate(),
+        service.updateOne(id, operationRequest.getName(), operationRequest.getDescription(), operationRequest.getBasePrice(), operationRequest.getTaxRate(),
                 operationRequest.getProductStatus(), operationRequest.getInventoryQuantity());
         return service.updateOne(id, operationRequest.getName(), operationRequest.getDescription(), operationRequest.getBasePrice(), operationRequest.getTaxRate(),
                 operationRequest.getProductStatus(), operationRequest.getInventoryQuantity());
