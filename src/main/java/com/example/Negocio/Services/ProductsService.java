@@ -31,8 +31,8 @@ public class ProductsService {
         return resp;
     }
 
-    public List<Product> findAll() {
-        List<Product> all = sqlProductsRepository.findAll();
+    public List<ProductOperationRequest> findAll() {
+        List<ProductOperationRequest> all = sqlProductsRepository.findAll();
         return all;
     }
 

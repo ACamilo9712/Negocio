@@ -42,7 +42,7 @@ class ProductControllerTest {
 
     private ProductOperation productOperation;
 
-    private List<Product> array;
+    private List<ProductOperationRequest> array;
 
     @Test
     void insertOne() throws Exception {

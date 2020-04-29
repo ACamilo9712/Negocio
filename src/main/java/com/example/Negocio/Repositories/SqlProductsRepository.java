@@ -82,19 +82,18 @@ public class SqlProductsRepository implements ProductsRepository {
     }
 
     @Override
-    public List<Product> findAll() {
-        String SQL = "SELECT IDEN,NOMBRE,DESCRIPCION,PRECIOBASE,TASAIMPUESTOS,ESTADO,CANTINVE FROM PRODUCTOS";
-        RowMapper<Product> rowMapper = (resultSet, i) -> {
-            ProductId id = ProductId.of(resultSet.getLong("IDEN"));
+    public List<ProductOperationRequest> findAll() {
+        String SQL = "SELECT NOMBRE,DESCRIPCION,PRECIOBASE,TASAIMPUESTOS,ESTADO,CANTINVE FROM PRODUCTOS";
+        RowMapper<ProductOperationRequest> rowMapper = (resultSet, i) -> {
             Name name = Name.of(resultSet.getString("NOMBRE"));
             Description descripcion = Description.of(resultSet.getString("DESCRIPCION"));
             BasePrice precioBase = BasePrice.of(resultSet.getBigDecimal("PRECIOBASE"));
             TaxRate tasaImpuesto = TaxRate.of(resultSet.getBigDecimal("TASAIMPUESTOS"));
             ProductStatus estado = ProductStatus.valueOf(resultSet.getString("ESTADO"));
             InventoryQuantity cantidadInventario = InventoryQuantity.of(resultSet.getInt("CANTINVE"));
-            return Product.of(id, name, descripcion, precioBase, tasaImpuesto, estado, cantidadInventario);
+            return ProductOperationRequest.of( name, descripcion, precioBase, tasaImpuesto, estado, cantidadInventario);
         };
-        List<Product> productsList = jdbcTemplate.query(SQL, rowMapper);
+        List<ProductOperationRequest> productsList = jdbcTemplate.query(SQL, rowMapper);
         return productsList;
     }
 

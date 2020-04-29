@@ -32,7 +32,7 @@ public class ProductController {
     }
 
     @GetMapping("list")
-    public List<Product> findAll() {
+    public List<ProductOperationRequest> findAll() {
         return service.findAll();
     }
 

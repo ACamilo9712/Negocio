@@ -14,7 +14,7 @@ public interface ProductsRepository {
 
     ProductOperation findById(Long id);
 
-    List<Product> findAll();
+    List<ProductOperationRequest> findAll();
 
     ProductOperation updateOne(Long id, ProductOperationRequest operationRequest);
 
